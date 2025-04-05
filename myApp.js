@@ -37,6 +37,29 @@ const findPeopleByName = (personName, done) => {
   })
 };
 
+// If you dont pass the callback for the find method, it will return a Query object. You can use the exec method to execute the query and get the result as a promise.
+const queryChain = (done) => {
+    const foodToSearch = "burrito";
+
+    // the find method returns a Query object, so you can chain methods on it!
+    var findQuery = Person.find({favoriteFoods: foodToSearch})
+                    .sort({name: 1}) // 1 is ascending, -1 is descending
+                    .limit(2)
+                    .select('name'); // select only the name field
+
+    // the .exec method executes the query returning an array of documents!
+    findQuery.exec(function(err, data){
+        done(null /*, data*/);
+    });
+
+    // Or, you can use the .then method to handle the result as a Promise.
+    // findQuery.exec.then(function(data){
+    //     console.log(data);
+    // });
+
+    query.sort({name: 1}).limit(2).select('-age');
+};
+
 // Find one(first) person with a certain food
 // see the search options here: https://mongoosejs.com/docs/api.html#model_Model.findOne
 let food = 'meat';
